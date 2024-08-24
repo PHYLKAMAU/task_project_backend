@@ -29,7 +29,11 @@ class TaskController extends Controller
 
         $task = Task::create($request->all());
 
-        return new TaskResource($task);
+        return response()->json([
+            'status' => 'success',
+            'message'=> 'Task created successfully',
+            'task' =>$task
+        ]);
     }
 
     public function update(Request $request, Task $task)
