@@ -31,23 +31,32 @@ class TaskController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message'=> 'Task created successfully',
-            'task' =>$task
+            'message' => 'Task created successfully',
+            'task' => $task
         ]);
     }
 
-    public function update(Request $request, Task $task)
+    public function update(Request $request, $id)
     {
+        // Validate the incoming request
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'is_completed' => 'boolean',
+            'is_completed' => 'boolean', // Optional field if you are updating it
         ]);
+        dd($id);
 
-        $task->update($request->all());
+        // Find the task by ID or return a 404 if not found
+        $task = Task::findOrFail($id);
 
+        // Update the task with validated data
+        $task->update($request->only(['title', 'description', 'is_completed']));
+
+        // Return the updated task as a resource
         return new TaskResource($task);
     }
+
+
 
     public function destroy(Task $task)
     {
