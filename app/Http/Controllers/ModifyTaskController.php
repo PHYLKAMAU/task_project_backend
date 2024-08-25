@@ -11,14 +11,12 @@ class ModifyTaskController extends Controller
       $request->validate([
           'title' => 'required|string|max:255',
           'description' => 'required|string',
-          'is_completed' => 'boolean', // Optional field if you are updating it
-      ]);
+    ]);
 
       // Find the task by ID or return a 404 if not found
       $task = Task::findOrFail($id);
       $task->title = $request['title'];
       $task->description = $request['description'];
-      $task->is_completed = $request['is_completed'];
       // Update the task with validated data
       $task->update();
         return response()->json([
@@ -34,7 +32,7 @@ class ModifyTaskController extends Controller
       $task->update();
       return response()->json([
           'status' => 'success',
-          'message' => 'Task updated successfully',
+          'message' => 'Task marked as completed',
           'task' => $task,
       ]);
     }
